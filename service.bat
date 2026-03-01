@@ -1,4 +1,4 @@
-@echo off
+﻿@echo off
 set "LOCAL_VERSION=1.9.7"
 
 :: External commands
@@ -388,9 +388,9 @@ chcp 437 > nul
 cls
 
 :: Set current version and URLs
-set "GITHUB_VERSION_URL=https://raw.githubusercontent.com/Flowseal/zapret-discord-youtube/main/.service/version.txt"
-set "GITHUB_RELEASE_URL=https://github.com/Flowseal/zapret-discord-youtube/releases/tag/"
-set "GITHUB_DOWNLOAD_URL=https://github.com/Flowseal/zapret-discord-youtube/releases/latest"
+set "GITHUB_VERSION_URL=https://raw.githubusercontent.com/ssbaxys/Vladpret/main/.service/version.txt"
+set "GITHUB_RELEASE_URL=https://github.com/ssbaxys/Vladpret/releases/tag/"
+set "GITHUB_DOWNLOAD_URL=https://github.com/ssbaxys/Vladpret/releases/latest"
 
 :: Get the latest version from GitHub
 for /f "delims=" %%A in ('powershell -NoProfile -Command "(Invoke-WebRequest -Uri \"%GITHUB_VERSION_URL%\" -Headers @{\"Cache-Control\"=\"no-cache\"} -UseBasicParsing -TimeoutSec 5).Content.Trim()" 2^>nul') do set "GITHUB_VERSION=%%A"
@@ -415,9 +415,8 @@ if "%LOCAL_VERSION%"=="%GITHUB_VERSION%" (
 echo New version available: %GITHUB_VERSION%
 echo Release page: %GITHUB_RELEASE_URL%%GITHUB_VERSION%
 
-echo Opening the download page...
-start "" "%GITHUB_DOWNLOAD_URL%"
-
+echo Starting Auto-Update...
+start "" powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0utils\auto_update.ps1"
 
 if "%1"=="soft" exit 
 pause
@@ -478,7 +477,7 @@ echo:
 tasklist /FI "IMAGENAME eq AdguardSvc.exe" | find /I "AdguardSvc.exe" > nul
 if !errorlevel!==0 (
     call :PrintRed "[X] Adguard process found. Adguard may cause problems with Discord"
-    call :PrintRed "https://github.com/Flowseal/zapret-discord-youtube/issues/417"
+    call :PrintRed "https://github.com/ssbaxys/Vladpret/issues/417"
 ) else (
     call :PrintGreen "Adguard check passed"
 )
@@ -488,7 +487,7 @@ echo:
 sc query | findstr /I "Killer" > nul
 if !errorlevel!==0 (
     call :PrintRed "[X] Killer services found. Killer conflicts with zapret"
-    call :PrintRed "https://github.com/Flowseal/zapret-discord-youtube/issues/2512#issuecomment-2821119513"
+    call :PrintRed "https://github.com/ssbaxys/Vladpret/issues/2512#issuecomment-2821119513"
 ) else (
     call :PrintGreen "Killer check passed"
 )
@@ -903,7 +902,7 @@ chcp 437 > nul
 cls
 
 set "listFile=%~dp0lists\ipset-all.txt"
-set "url=https://raw.githubusercontent.com/Flowseal/zapret-discord-youtube/refs/heads/main/.service/ipset-service.txt"
+set "url=https://raw.githubusercontent.com/ssbaxys/Vladpret/refs/heads/main/.service/ipset-service.txt"
 
 echo Updating ipset-all...
 
@@ -931,7 +930,7 @@ chcp 437 > nul
 cls
 
 set "hostsFile=%SystemRoot%\System32\drivers\etc\hosts"
-set "hostsUrl=https://raw.githubusercontent.com/Flowseal/zapret-discord-youtube/refs/heads/main/.service/hosts"
+set "hostsUrl=https://raw.githubusercontent.com/ssbaxys/Vladpret/refs/heads/main/.service/hosts"
 set "tempFile=%TEMP%\zapret_hosts.txt"
 set "needsUpdate=0"
 
@@ -1032,7 +1031,7 @@ exit /b
 where %1 >nul 2>&1
 if %errorLevel% neq 0 (
     echo [ERROR] %1 not found in PATH
-    echo Fix your PATH variable with instructions here https://github.com/Flowseal/zapret-discord-youtube/issues/7490
+    echo Fix your PATH variable with instructions here https://github.com/ssbaxys/Vladpret/issues/7490
     pause
     exit /b 1
 )
