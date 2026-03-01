@@ -83,6 +83,7 @@ echo.
 echo   :: TOOLS
 echo      10. Run Diagnostics
 echo      11. Run Tests
+echo      12. Smart Strategy Orchestrator (Auto-Tuner)
 echo.
 echo   ----------------------------------------
 echo      0. Exit
@@ -101,7 +102,31 @@ if "%menu_choice%"=="8" goto hosts_update
 if "%menu_choice%"=="9" goto service_check_updates
 if "%menu_choice%"=="10" goto service_diagnostics
 if "%menu_choice%"=="11" goto run_tests
+if "%menu_choice%"=="12" goto run_orchestrator
 if "%menu_choice%"=="0" exit /b
+goto menu
+
+
+:: RUN ORCHESTRATOR =======================
+:run_orchestrator
+chcp 437 >nul
+cls
+
+:: Require PowerShell 3.0+
+powershell -NoProfile -Command "if ($PSVersionTable -and $PSVersionTable.PSVersion -and $PSVersionTable.PSVersion.Major -ge 3) { exit 0 } else { exit 1 }" >nul 2>&1
+if %errorLevel% neq 0 (
+    echo PowerShell 3.0 or newer is required for Orchestrator.
+    echo Please upgrade PowerShell and rerun this script.
+    echo.
+    pause
+    goto menu
+)
+
+echo Starting Smart Strategy Orchestrator in PowerShell window...
+echo It will take a few minutes to test different DPI bypass strategies specifically for your network.
+echo.
+start "" powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0utils\smart_orchestrator.ps1"
+pause
 goto menu
 
 
